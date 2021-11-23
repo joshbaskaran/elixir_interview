@@ -14,18 +14,21 @@ class FileReader():
         Reads the file at the provided path and generates a list and a numpy array appropriate to the file extention.
         """
         # if the file extentions list becomes too large, list of file extentions should be moved into a separate file eg. contants.py
+        if not isinstance(path, str): raise TypeError("{path} must be a string")
+
+
         self.valid_file_extentions: list = ['s', 'f']
         self.file_path = path
         self.file_name = self.file_path.split('/')[-1]
         self.file_extention = self.file_path.split('.')[-1]
         self.read_file()
 
-    def read_file(self) -> None:
+    def read_file(self):
         try:
             if self.file_extention not in self.valid_file_extentions: raise FileExtentionError
         except FileExtentionError:
             print("{} is Not a valid file extention.".format(self.file_extention))
-            exit(2)
+            exit(1)
         
         # From python 3.10 this should be replaced with a match clause instead
         if self.file_extention == "s": self.read_segment_file()
@@ -44,7 +47,7 @@ class FileReader():
         self.segment_list_ndarray: np.ndarray = np.asarray(self.segment_list, dtype=int)
 
 
-    def read_function_file(self) -> None:
+    def read_function_file(self):
         self.function_list: list = []
         with open(self.file_path, 'r') as input_handle:
             for line in input_handle:

@@ -10,12 +10,17 @@ class CustomStatistics:
     # libraries with optimized methods
     def p_corr(x:np.ndarray, y:np.ndarray) -> float:
         """calculate sample pearson correlation coefficient for two arrays"""
+        
+        if not isinstance(x, list): raise TypeError("{x} must be a list")
+        if not isinstance(y, np.ndarray): raise TypeError("{y} must be a numpy array")
+
+
         x_mean = x - np.mean(x, axis=0)
         y_mean = y - np.mean(y, axis=0)
         x_mean_square = np.sqrt(np.sum(np.square(x_mean)))
         y_mean_square = np.sqrt(np.sum(np.square(y_mean)))
         xy = np.sum(x_mean * y_mean)
-
+        
         return xy/(x_mean_square * y_mean_square)
     
     # private function to avoid repeating code
@@ -28,6 +33,8 @@ class CustomStatistics:
         input list: [[1,3],[3,5]]
         output list: [1,2,3,4]
         """
+        if not isinstance(x, list): raise TypeError("{x} must be a list")
+
         positions: list = []
         for line in x:
             positions.extend([val for val in range(line[0], line[-1])])
@@ -36,6 +43,9 @@ class CustomStatistics:
     # Easier to read/maintain and more "pythonic" but slower
     def count_overlaps(x:list, y:list) -> int:
         """Compare two lists and count the positions which overlap"""
+        if not isinstance(x, list): raise TypeError("{x} must be a list")
+        if not isinstance(y, list): raise TypeError("{y} must be a list")
+        
         x_positions: list = CustomStatistics.__list_extender(x)
         y_positions: list = CustomStatistics.__list_extender(y)
         x_set: set = set(x_positions)
@@ -44,8 +54,10 @@ class CustomStatistics:
     # Harder to read/maintain but more efficient and takes about half the time 
     def count_overlaps_2(x:list, y:list) -> int:
         """Compare two lists and count the positions which overlap"""
-        counter:int = 0
+        if not isinstance(x, list): raise TypeError("{x} must be a list")
+        if not isinstance(y, list): raise TypeError("{y} must be a list")
 
+        counter:int = 0
         i: int = 0 # Setting the starting location for inner loop
         for x_line in x:
             x_start, x_end = x_line
@@ -67,6 +79,9 @@ class CustomStatistics:
         Assumes that the list contains the start and stop positions and generates a 
         list of all positions to use as index.
         """
+        if not isinstance(x, list): raise TypeError("{x} must be a list")
+        if not isinstance(y, np.ndarray): raise TypeError("{y} must be a numpy array")
+
         x_positions: list = CustomStatistics.__list_extender(x)
         y_elements: np.ndarray = np.take(y, x_positions)
         return np.mean(y_elements)
