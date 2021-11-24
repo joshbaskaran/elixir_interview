@@ -2,7 +2,7 @@
 Solutions for the ELIXIR/ UiO interview problems
 
 ## Dependency requirements
-The code should be runnable as long as both python3 and numpy as installed.
+The code should be runnable as long as both python3 and numpy are installed.
 
 A list of exact dependencies are given in the requirements.txt file.
 This can be used to produce the exact environment in which this solution was written.
