@@ -48,7 +48,7 @@ def main():
     try:
         input_1 = fr.FileReader(sys.argv[1])
         input_2 = fr.FileReader(sys.argv[2])
-    except fr.FileExtentionError as err:
+    except (fr.FileExtentionError, fr.BadSegmentFileError, ValueError) as err:
         print(err)
         sys.exit(1)
 
