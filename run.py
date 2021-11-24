@@ -2,11 +2,13 @@
 # for a real project, better to use __init__.py
 # and create a package instead
 
+# To run on a shell:
+# $ python run.py file1 file2
+
 import sys
 from os.path import exists as file_exists
 import FileReader as fr
 import Calculator as calc
-import time
 
 def overlap_positions(segment_1:fr.FileReader, segment_2:fr.FileReader) -> None:
     """Takes two segment files as input and prints the number of overlaps"""
@@ -32,19 +34,23 @@ def mean_seg_func(segment:fr.FileReader, function_:fr.FileReader) -> float:
 
 def main():
     try:
-        if not file_exists(sys.argv[1]): raise FileExistsError
-    except FileExistsError:
+        if not file_exists(sys.argv[1]): raise FileNotFoundError
+    except FileNotFoundError:
         print("{}: No such file".format(sys.argv[1]))
         sys.exit(1)
     
     try:
-        if not file_exists(sys.argv[2]): raise FileExistsError
-    except FileExistsError:
+        if not file_exists(sys.argv[2]): raise FileNotFoundError
+    except FileNotFoundError:
         print("{}: No such file".format(sys.argv[2]))
         sys.exit(1)
-
-    input_1 = fr.FileReader(sys.argv[1])
-    input_2 = fr.FileReader(sys.argv[2])
+    
+    try:
+        input_1 = fr.FileReader(sys.argv[1])
+        input_2 = fr.FileReader(sys.argv[2])
+    except fr.FileExtentionError as err:
+        print(err)
+        sys.exit(1)
 
     if input_1.file_extention == input_2.file_extention == 's': overlap_positions(input_1, input_2)
     elif input_1.file_extention == input_2.file_extention == 'f': perason_correlation(input_1, input_2)
@@ -53,7 +59,4 @@ def main():
         else: mean_seg_func(input_2, input_1)
 
 if __name__ == "__main__":
-    start = time.time()
     main()
-    stop = time.time()
-    print("Time = {}".format(stop-start))
