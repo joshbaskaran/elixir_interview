@@ -8,6 +8,9 @@ class FileExtentionError(Exception):
 class BadSegmentFileError(Exception):
     pass
 
+class BadFunctionFileError(Exception):
+    pass
+
 # read input files
 class FileReader():   
     # This could potentially be more modular if we are to make it into a class 
@@ -44,7 +47,7 @@ class FileReader():
         except ValueError:
             raise ValueError("{} file contains non-integer values".format(self.file_name))
 
-        if not all(len(sub)==2 for sub in self.segment_list): raise BadSegmentFileError
+        if not all(len(sub)==2 for sub in self.segment_list): raise BadSegmentFileError("{} segment file does not contain 2 entries in each row".format(self.file_name))
         # save as numpy array in the class instance for quick math operations.
         # On the fly conversion would be better for saving memory, instead of 
         # saving directly in the class instance.
@@ -60,5 +63,7 @@ class FileReader():
                     self.function_list.append(float(line.strip()))
         except ValueError:
             raise ValueError("{} file contains values not convertable to type float".format(self.file_name))
+
+        if len(self.function_list) != 10000000: raise BadFunctionFileError("{} function file does not contain 10,000,000 lines".format(self.file_name))
 
         self.function_list_ndarray: np.ndarray = np.asarray(self.function_list, dtype=float)
