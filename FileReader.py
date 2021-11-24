@@ -48,6 +48,15 @@ class FileReader():
             raise ValueError("{} file contains non-integer values".format(self.file_name))
 
         if not all(len(sub)==2 for sub in self.segment_list): raise BadSegmentFileError("{} segment file does not contain 2 entries in each row".format(self.file_name))
+
+        start, end = self.segment_list[0]
+        for index in range(1, len(self.segment_list)):
+            if self.segment_list[index][0] < end:
+                raise BadSegmentFileError("{} segment file has overlaping positions".format(self.file_name))
+            start = self.segment_list[index][0]
+            end = self.segment_list[index][-1]
+
+        
         # save as numpy array in the class instance for quick math operations.
         # On the fly conversion would be better for saving memory, instead of 
         # saving directly in the class instance.
